@@ -1,0 +1,104 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login to Chatbot</title>
+  <style>
+    body {
+      font-family: serif;
+      background: #fff9f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .login-container {
+     background: url('/logo.gif') no-repeat center center;
+     background-size: cover;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 300px;
+    }
+    input {
+      width: 100%;
+      margin: 10px 0;
+      padding: 12px;
+      font-size: 1rem;
+    }
+   button {
+  width: 40%;
+  text-align: center;
+  padding: 12px;
+  background: #4a90e2;
+  color: white;
+  border: none;
+  display: block;
+  border-radius: 3%;
+  border: #ffffff 3px solid;
+  margin: 20px auto; /* centers horizontally */
+}
+
+    button:hover {
+      background: #000000;
+    }
+    .link {
+      text-align: center;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <h2 style="text-align:center; color:#fff9f9">Login</h2>
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Password" />
+    <button onclick="login()">Login</button>
+    <div class="link">
+      or <a href="#" onclick="signup()">Sign Up</a>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth-compat.js"></script>
+
+  <script>
+    // Replace with your Firebase config
+   const firebaseConfig = {
+  apiKey: "AIzaSyCVvaqJeppdqoL8lVM3rOdYlnqzZ3LmVsI",
+  authDomain: "chatbot-fdb19.firebaseapp.com",
+  projectId: "chatbot-fdb19",
+  storageBucket: "chatbot-fdb19.appspot.com",
+  messagingSenderId: "499513063427",
+  appId: "1:499513063427:web:b971d14bdb128fcc11f636",
+  measurementId: "G-9V7PKYR92K"
+};
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    function login() {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      auth.signInWithEmailAndPassword(email, password)
+        .then(() => {
+          window.location.href = "chatbot.html";
+        })
+        .catch(err => alert("Login Failed: " + err.message));
+    }
+
+    function signup() {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      auth.createUserWithEmailAndPassword(email, password)
+        .then(() => alert("Sign up successful! Now login."))
+        .catch(err => alert("Signup Failed: " + err.message));
+    }
+  </script>
+</body>
+</html>
