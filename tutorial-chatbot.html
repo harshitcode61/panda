@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tutorial Chatbot</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background: #f4f4f4;
+    }
+    .chat-container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 80vh;
+    }
+    .chat-header {
+      padding: 16px;
+      background: #4a90e2;
+      color: white;
+      font-size: 1.25rem;
+      font-weight: bold;
+      text-align: center;
+    }
+    .chat-box {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+    }
+    .message {
+      margin: 10px 0;
+      display: flex;
+    }
+    .bot {
+      justify-content: flex-start;
+    }
+    .user {
+      justify-content: flex-end;
+    }
+    .bubble {
+      max-width: 70%;
+      padding: 10px 15px;
+      border-radius: 20px;
+      background: #e0e0e0;
+      position: relative;
+    }
+    .bot .bubble {
+      background: #e1f5fe;
+      color: #333;
+    }
+    .user .bubble {
+      background: #4a90e2;
+      color: white;
+    }
+    .chat-input {
+      display: flex;
+      border-top: 1px solid #ddd;
+    }
+    .chat-input input {
+      flex: 1;
+      padding: 14px;
+      border: none;
+      font-size: 1rem;
+      outline: none;
+    }
+    .chat-input button {
+      padding: 0 20px;
+      background: #4a90e2;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .chat-input button:hover {
+      background: #357ab8;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="chat-container">
+    <div class="chat-header">Tutorial Chatbot</div>
+    <div class="chat-box" id="chatBox">
+      <!-- Messages will appear here -->
+    </div>
+    <div class="chat-input">
+      <input type="text" id="userInput" placeholder="Ask about HTML, CSS, JS..." />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const chatBox = document.getElementById('chatBox');
+
+    function addMessage(text, sender) {
+      const msg = document.createElement('div');
+      msg.className = `message ${sender}`;
+      msg.innerHTML = `<div class="bubble">${text}</div>`;
+      chatBox.appendChild(msg);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function getBotResponse(message) {
+      message = message.toLowerCase();
+      if (message.includes("html")) {
+        return "HTML stands for HyperText Markup Language. It's used to structure web pages.";
+      } else if (message.includes("css")) {
+        return "CSS is used for styling HTML elements. It stands for Cascading Style Sheets.";
+      } else if (message.includes("javascript") || message.includes("js")) {
+        return "JavaScript adds interactivity to websites. It's a client-side scripting language.";
+      } else if (message.includes("help")) {
+        return "You can ask me about HTML, CSS, or JavaScript tutorials!";
+      } else {
+        return "Sorry, I didn't understand that. Try asking about HTML, CSS, or JS.";
+      }
+    }
+
+    function sendMessage() {
+      const input = document.getElementById('userInput');
+      const userMessage = input.value.trim();
+      if (!userMessage) return;
+
+      addMessage(userMessage, 'user');
+      setTimeout(() => {
+        const botReply = getBotResponse(userMessage);
+        addMessage(botReply, 'bot');
+      }, 500);
+
+      input.value = '';
+    }
+
+    document.getElementById('userInput').addEventListener("keypress", function (e) {
+      if (e.key === "Enter") sendMessage();
+    });
+  </script>
+
+</body>
+</html>
