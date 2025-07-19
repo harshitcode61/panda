@@ -1,4 +1,3 @@
-<!-- chatbot.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -54,7 +53,7 @@
       display: flex;
       border-top: 1px solid #ddd;
     }
-    .chat-input input {
+    .chat-input input[type="text"] {
       flex: 1;
       padding: 14px;
       border: none;
@@ -86,7 +85,9 @@
     </div>
     <div class="chat-box" id="chatBox"></div>
     <div class="chat-input">
-      <input type="text" id="userInput" placeholder="Ask about HTML, CSS, JS..." />
+      <input type="text" id="userInput" placeholder="Ask a question or upload an image..." />
+      <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="sendImage()" />
+      <button onclick="document.getElementById('imageInput').click()">📷</button>
       <button onclick="sendMessage()">Send</button>
     </div>
   </div>
@@ -96,30 +97,26 @@
   <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth-compat.js"></script>
 
   <script>
-    // Firebase Config (same as login page)
     const firebaseConfig = {
-  apiKey: "AIzaSyCVvaqJeppdqoL8lVM3rOdYlnqzZ3LmVsI",
-  authDomain: "chatbot-fdb19.firebaseapp.com",
-  projectId: "chatbot-fdb19",
-  storageBucket: "chatbot-fdb19.firebasestorage.app",
-  messagingSenderId: "499513063427",
-  appId: "1:499513063427:web:b971d14bdb128fcc11f636",
-  measurementId: "G-9V7PKYR92K"
-};
+      apiKey: "AIzaSyCVvaqJeppdqoL8lVM3rOdYlnqzZ3LmVsI",
+      authDomain: "chatbot-fdb19.firebaseapp.com",
+      projectId: "chatbot-fdb19",
+      storageBucket: "chatbot-fdb19.appspot.com",
+      messagingSenderId: "499513063427",
+      appId: "1:499513063427:web:b971d14bdb128fcc11f636",
+      measurementId: "G-9V7PKYR92K"
+    };
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
     auth.onAuthStateChanged(user => {
-      if (!user) {
-        window.location.href = "index.html"; // redirect to login
-      }
+      if (!user) window.location.href = "index.html";
     });
 
     function logout() {
       auth.signOut();
     }
 
-    // Chatbot logic
     const chatBox = document.getElementById('chatBox');
 
     function addMessage(text, sender) {
@@ -130,33 +127,42 @@
       chatBox.scrollTop = chatBox.scrollHeight;
     }
 
-    function getBotResponse(message) {
-      message = message.toLowerCase();
-      if (message.includes("html")) {
-        return "HTML defines structure using tags like <h1>, <div>, etc.";
-      } else if (message.includes("css")) {
-        return "CSS adds styling to your HTML like colors, fonts, layouts.";
-      } else if (message.includes("js") || message.includes("javascript")) {
-        return "JavaScript brings interactivity to your webpage.";
-      } else if (message.includes("help")) {
-        return "Try asking: 'What is HTML?', 'Tell me about CSS', or 'What is JS?'.";
-      } else {
-        return "Sorry, I didn't understand. Ask about HTML, CSS, or JS.";
-      }
-    }
-
-    function sendMessage() {
+    async function sendMessage() {
       const input = document.getElementById('userInput');
       const userMessage = input.value.trim();
       if (!userMessage) return;
-
       addMessage(userMessage, 'user');
-      setTimeout(() => {
-        const botReply = getBotResponse(userMessage);
-        addMessage(botReply, 'bot');
-      }, 400);
-
       input.value = '';
+
+      const res = await fetch("http://localhost:5000/gemini-text", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: userMessage }),
+      });
+
+      const data = await res.json();
+      addMessage(data.reply || "Sorry, couldn't understand.", "bot");
+    }
+
+    async function sendImage() {
+      const fileInput = document.getElementById("imageInput");
+      const file = fileInput.files[0];
+      if (!file) return;
+
+      addMessage("📷 [Image uploaded]", "user");
+
+      const reader = new FileReader();
+      reader.onload = async function (event) {
+        const base64Image = event.target.result.split(',')[1];
+        const res = await fetch("http://localhost:5000/gemini-image", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ image: base64Image }),
+        });
+        const data = await res.json();
+        addMessage(data.reply || "Couldn't understand the image.", "bot");
+      };
+      reader.readAsDataURL(file);
     }
 
     document.getElementById('userInput').addEventListener("keypress", function (e) {
