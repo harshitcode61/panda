@@ -154,7 +154,7 @@
       const reader = new FileReader();
       reader.onload = async function (event) {
         const base64Image = event.target.result.split(',')[1];
-        const res = await fetch("http://localhost:5000/gemini-image", {
+        const res = await fetch("https://panda-y8kr.onrender.com/gemini-image", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ image: base64Image }),
