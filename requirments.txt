@@ -1,3 +1,4 @@
-Flask==3.0.3
-flask-cors==4.0.0
-google-generativeai==0.5.2
+Flask
+flask-cors
+google-generativeai
+Pillow
