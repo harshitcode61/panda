@@ -134,7 +134,7 @@
       addMessage(userMessage, 'user');
       input.value = '';
 
-      const res = await fetch("http://localhost:5000/gemini-text", {
+      const res = await fetch("https://panda-y8kr.onrender.com/gemini-text", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: userMessage }),
