@@ -1,104 +1,346 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login to Chatbot</title>
-  <style>
-    body {
-      font-family: serif;
-      background: #fff9f9;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    .login-container {
-     background: url('/logo.gif') no-repeat center center;
-     background-size: cover;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      width: 300px;
-    }
-    input {
-      width: 100%;
-      margin: 0px 0px 10px 0px;
-      padding: 0px;
-      font-size: 1rem;
-    }
-   button {
-  width: 40%;
-  text-align: center;
-  padding: 5px;
-  background: #4a90e2;
-  color: white;
-  border: none;
-  display: block;
-  border-radius: 3%;
-  border: #ffffff 3px solid;
-  margin: 20px auto; /* centers horizontally */
-}
-
-    button:hover {
-      background: #000000;
-    }
-    .link {
-      text-align: center;
-      margin-top: 10px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Tutor - Your Personal Learning Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background-color: #4a6fa5;
+            color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .logo span {
+            color: #ffd166;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #ffd166;
+        }
+        
+        .login-btn {
+            background-color: #ffd166;
+            color: #333;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .login-btn:hover {
+            background-color: #ffc233;
+        }
+        
+        .hero {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4rem 5%;
+            background: linear-gradient(135deg, #4a6fa5 0%, #3a5a8a 100%);
+            color: white;
+        }
+        
+        .hero-content {
+            flex: 1;
+            padding-right: 2rem;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .cta-btn {
+            background-color: #ffd166;
+            color: #333;
+            border: none;
+            padding: 0.8rem 1.8rem;
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .cta-btn:hover {
+            background-color: #ffc233;
+            transform: translateY(-2px);
+        }
+        
+        .hero-image {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .hero-image img {
+            max-width: 300px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .features {
+            padding: 5rem 5%;
+            text-align: center;
+        }
+        
+        .features h2 {
+            font-size: 2rem;
+            margin-bottom: 3rem;
+            color: #333;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #4a6fa5;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        
+        .how-it-works {
+            padding: 5rem 5%;
+            background-color: #eef2f7;
+        }
+        
+        .how-it-works h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 3rem;
+            color: #333;
+        }
+        
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        
+        .step {
+            flex: 1;
+            min-width: 250px;
+            text-align: center;
+            padding: 0 1.5rem;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background-color: #4a6fa5;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 auto 1rem;
+        }
+        
+        .step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 25px;
+            right: -50px;
+            width: 100px;
+            height: 2px;
+            background-color: #4a6fa5;
+            opacity: 0.3;
+        }
+        
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 2rem 5%;
+            margin-top: 3rem;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-links li {
+            margin: 0 1rem;
+        }
+        
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #ffd166;
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .hero-content {
+                padding-right: 0;
+                margin-bottom: 2rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .step:not(:last-child)::after {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body>
-
-  <div class="login-container">
-    <h2 style="text-align:center; color:#fff9f9"; margin="bottom:10px;">Login</h2>
-    <input type="email" id="email" placeholder="Email" />
-    <input type="password" id="password" placeholder="Password" />
-    <button onclick="login()">Login</button>
-    <div class="link">
-      or <a href="#" onclick="signup()">Sign Up</a>
-    </div>
-  </div>
-
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth-compat.js"></script>
-
-  <script>
-    // Replace with your Firebase config
-   const firebaseConfig = {
-  apiKey: "AIzaSyCVvaqJeppdqoL8lVM3rOdYlnqzZ3LmVsI",
-  authDomain: "chatbot-fdb19.firebaseapp.com",
-  projectId: "chatbot-fdb19",
-  storageBucket: "chatbot-fdb19.appspot.com",
-  messagingSenderId: "499513063427",
-  appId: "1:499513063427:web:b971d14bdb128fcc11f636",
-  measurementId: "G-9V7PKYR92K"
-};
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-
-    function login() {
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value.trim();
-
-      auth.signInWithEmailAndPassword(email, password)
-        .then(() => {
-          window.location.href = "chatbot.html";
-        })
-        .catch(err => alert("Login Failed: " + err.message));
-    }
-
-    function signup() {
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value.trim();
-
-      auth.createUserWithEmailAndPassword(email, password)
-        .then(() => alert("Sign up successful! Now login."))
-        .catch(err => alert("Signup Failed: " + err.message));
-    }
-  </script>
+    <nav class="navbar">
+        <div class="logo">Chatbot<span>Tutor</span></div>
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="/chatbot.html">Chatbot</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+        <button class="login-btn" onclick="location.href='/auth.html'">Login</button>
+    </nav>
+    
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Your Personal Learning Assistant</h1>
+            <p>Get instant help with your homework and study questions. Our AI-powered tutor provides step-by-step solutions and explanations to help you learn better.</p>
+            <button class="cta-btn" onclick="location.href='chatbot.html'">Try Chatbot Now</button>
+        </div>
+        <div class="hero-image">
+            <img src="/public/img/logo.png" alt="Chatbot Tutor in action">
+        </div>
+    </section>
+    
+    <section class="features">
+        <h2>Why Choose Chatbot Tutor?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📚</div>
+                <h3>24/7 Availability</h3>
+                <p>Get help whenever you need it, day or night. No more waiting for office hours.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🧠</div>
+                <h3>Step-by-Step Solutions</h3>
+                <p>Don't just get answers - understand how to solve problems with detailed explanations.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Instant Responses</h3>
+                <p>No more waiting - get immediate help with your questions in multiple subjects.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="how-it-works">
+        <h2>How It Works</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Ask Your Question</h3>
+                <p>Type or upload your homework question to our chatbot interface.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>AI Analyzes</h3>
+                <p>Our advanced AI understands your question and identifies the best way to help.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Get Solution</h3>
+                <p>Receive a detailed, step-by-step explanation to help you learn and understand.</p>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <ul class="footer-links">
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Contact Us</a></li>
+        </ul>
+        <p>&copy; 2023 Chatbot Tutor. All rights reserved.</p>
+    </footer>
 </body>
 </html>
