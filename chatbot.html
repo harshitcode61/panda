@@ -65,13 +65,17 @@
       font-size: 1rem;
       outline: none;
     }
-    .chat-input button {
-      padding: 0 20px;
-      background: #4a90e2;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
+     .chat-input button {
+    padding: 0 20px;
+    background: #4a90e2;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+
+  .chat-input button:first-child {
+    margin-right: 10px; /* Add spacing between the buttons */
+  }
     .logout-btn {
       background: #e74c3c;
       border: none;
@@ -92,8 +96,9 @@
     <div class="chat-input">
       <input type="text" id="userInput" placeholder="Ask a question or upload an image..." />
       <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="sendImage()" />
-      <button onclick="document.getElementById('imageInput').click()">📷</button>
-      <button onclick="sendMessage()">Send</button>
+      <div class="chat-input">
+  <button onclick="document.getElementById('imageInput').click()">📷</button>
+  <button onclick="sendMessage()">Send</button>
     </div>
   </div>
 
