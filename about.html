@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Chatbot Tutor Team</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background-color: #4a6fa5;
+            color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .logo span {
+            color: #ffd166;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #ffd166;
+        }
+        
+        .login-btn {
+            background-color: #ffd166;
+            color: #333;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .login-btn:hover {
+            background-color: #ffc233;
+        }
+        
+        /* Mobile menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .mobile-nav {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: #4a6fa5;
+            padding: 1rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+        
+        .mobile-nav.active {
+            display: block;
+        }
+        
+        .mobile-nav-links {
+            list-style: none;
+        }
+        
+        .mobile-nav-links li {
+            margin: 1rem 0;
+        }
+        
+        .mobile-nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            display: block;
+            padding: 0.5rem 0;
+        }
+        
+        .about-hero {
+            padding: 4rem 5%;
+            background: linear-gradient(135deg, #4a6fa5 0%, #3a5a8a 100%);
+            color: white;
+            text-align: center;
+        }
+        
+        .about-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .about-hero p {
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            opacity: 0.9;
+        }
+        
+        .team-section {
+            padding: 5rem 5%;
+            text-align: center;
+        }
+        
+        .team-section h2 {
+            font-size: 2rem;
+            margin-bottom: 3rem;
+            color: #333;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .team-card {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .team-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .team-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 1.5rem;
+            border: 5px solid #4a6fa5;
+        }
+        
+        .team-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        
+        .team-card p {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: auto;
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: #4a6fa5;
+            color: white;
+            border-radius: 50%;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 1.2rem;
+        }
+        
+        .social-links a:hover {
+            background-color: #3a5a8a;
+            transform: scale(1.1);
+        }
+        
+        .mission-section {
+            padding: 5rem 5%;
+            background-color: #eef2f7;
+            text-align: center;
+        }
+        
+        .mission-section h2 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: #333;
+        }
+        
+        .mission-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .mission-content p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+        
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 2rem 5%;
+            margin-top: 3rem;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links li {
+            margin: 0.5rem 1rem;
+        }
+        
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #ffd166;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links, .login-btn {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .team-grid {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+            }
+            
+            .about-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .about-hero p {
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 1rem;
+            }
+            
+            .about-hero {
+                padding: 3rem 1rem;
+            }
+            
+            .team-section, .mission-section {
+                padding: 3rem 1rem;
+            }
+            
+            .team-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">Chatbot<span>Tutor</span></div>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/chatbot.html">Chatbot</a></li>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+        <button class="login-btn" onclick="location.href='/auth.html'">Login</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="mobile-nav" id="mobileNav">
+            <ul class="mobile-nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/chatbot.html">Chatbot</a></li>
+                <li><a href="/about.html">About</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="/auth.html">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <section class="about-hero">
+        <h1>Meet Our Team</h1>
+        <p>The brilliant minds behind Chatbot Tutor who are passionate about making learning accessible and engaging for everyone.</p>
+    </section>
+    
+    <section class="team-section">
+        <h2>Our Team Members</h2>
+        <div class="team-grid">
+            <div class="team-card">
+                <img src="/harshit.jpg" alt="Harshit Sahu" class="team-img">
+                <h3>Harshit Sahu</h3>
+                <p>Backend Developer</p>
+                <div class="social-links">
+                    <a href="https://github.com/harshitcode61" target="_blank" title="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/harshit-sahu-011a1a298/" target="_blank" title="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="team-card">
+                <img src="/govind.jpg" alt="Govind Sharma" class="team-img">
+                <h3>Govind Sharma</h3>
+                <p>Frontend Developer</p>
+                <div class="social-links">
+                    <a href="https://github.com/govindsharma56" target="_blank" title="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/govind-sharma-1584b3260/" target="_blank" title="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="team-card">
+                <img src="/lakhan.jpg" alt="Lakhan Sahu" class="team-img">
+                <h3>Lakhan Sahu</h3>
+                <p>AI/ML Engineer</p>
+                <div class="social-links">
+                    <a href="https://github.com/lakhansahu" target="_blank" title="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://linkedin.com/in/lakhansahu" target="_blank" title="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="team-card">
+                <img src="/kasu.png" alt="Kaushlendra Singh" class="team-img">
+                <h3>Kaushlendra Singh</h3>
+                <p>Full Stack Developer</p>
+                <div class="social-links">
+                    <a href="https://github.com/kaushlendrasingh030" target="_blank" title="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/kaushlendrasingh030/" target="_blank" title="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="mission-section">
+        <div class="mission-content">
+            <h2>Our Mission</h2>
+            <p>At Chatbot Tutor, we believe that education should be accessible, personalized, and available to everyone, anytime. Our team is dedicated to creating innovative solutions that make learning easier and more effective.</p>
+            <p>By combining cutting-edge AI technology with educational expertise, we're transforming the way students learn and get help with their studies. Our chatbot tutor is just the beginning of our journey to revolutionize education.</p>
+        </div>
+    </section>
+    
+    <footer>
+        <ul class="footer-links">
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Contact Us</a></li>
+        </ul>
+        <p>&copy; 2023 Chatbot Tutor. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileNav = document.getElementById('mobileNav');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileNav.classList.toggle('active');
+        });
+        
+        // Close mobile menu when clicking on a link
+        const mobileLinks = document.querySelectorAll('.mobile-nav-links a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileNav.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
