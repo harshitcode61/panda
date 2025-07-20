@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chatbot Tutor - Your Personal Learning Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
     <style>
         * {
             margin: 0;
@@ -11,13 +14,19 @@
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
+        .last {
+            display: flex;
+
+            justify-content: flex-end;
+        }
+
         body {
             background-color: #f5f7fa;
             color: #333;
             line-height: 1.6;
         }
-        
+
         .navbar {
             display: flex;
             justify-content: space-between;
@@ -27,36 +36,40 @@
             color: white;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
-        
+
+        .bars {
+            display: none;
+        }
+
         .logo {
             font-size: 1.5rem;
             font-weight: bold;
         }
-        
+
         .logo span {
             color: #ffd166;
         }
-        
+
         .nav-links {
             display: flex;
             list-style: none;
         }
-        
+
         .nav-links li {
             margin-left: 2rem;
         }
-        
+
         .nav-links a {
             color: white;
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s;
         }
-        
+
         .nav-links a:hover {
             color: #ffd166;
         }
-        
+
         .login-btn {
             background-color: #ffd166;
             color: #333;
@@ -67,11 +80,11 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
-        
+
         .login-btn:hover {
             background-color: #ffc233;
         }
-        
+
         .hero {
             display: flex;
             justify-content: space-between;
@@ -80,23 +93,23 @@
             background: linear-gradient(135deg, #4a6fa5 0%, #3a5a8a 100%);
             color: white;
         }
-        
+
         .hero-content {
             flex: 1;
             padding-right: 2rem;
         }
-        
+
         .hero h1 {
             font-size: 2.5rem;
             margin-bottom: 1rem;
         }
-        
+
         .hero p {
             font-size: 1.1rem;
             margin-bottom: 2rem;
             opacity: 0.9;
         }
-        
+
         .cta-btn {
             background-color: #ffd166;
             color: #333;
@@ -108,41 +121,41 @@
             cursor: pointer;
             transition: all 0.3s;
         }
-        
+
         .cta-btn:hover {
             background-color: #ffc233;
             transform: translateY(-2px);
         }
-        
+
         .hero-image {
             flex: 1;
             text-align: center;
         }
-        
+
         .hero-image img {
             max-width: 300px;
             height: auto;
             border-radius: 10px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
-        
+
         .features {
             padding: 5rem 5%;
             text-align: center;
         }
-        
+
         .features h2 {
             font-size: 2rem;
             margin-bottom: 3rem;
             color: #333;
         }
-        
+
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
         }
-        
+
         .feature-card {
             background-color: white;
             padding: 2rem;
@@ -150,40 +163,40 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             transition: transform 0.3s;
         }
-        
+
         .feature-card:hover {
             transform: translateY(-10px);
         }
-        
+
         .feature-icon {
             font-size: 2.5rem;
             color: #4a6fa5;
             margin-bottom: 1rem;
         }
-        
+
         .feature-card h3 {
             margin-bottom: 1rem;
             color: #333;
         }
-        
+
         .how-it-works {
             padding: 5rem 5%;
             background-color: #eef2f7;
         }
-        
+
         .how-it-works h2 {
             text-align: center;
             font-size: 2rem;
             margin-bottom: 3rem;
             color: #333;
         }
-        
+
         .steps {
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
         }
-        
+
         .step {
             flex: 1;
             min-width: 250px;
@@ -192,7 +205,7 @@
             margin-bottom: 2rem;
             position: relative;
         }
-        
+
         .step-number {
             width: 50px;
             height: 50px;
@@ -206,7 +219,7 @@
             font-weight: bold;
             margin: 0 auto 1rem;
         }
-        
+
         .step:not(:last-child)::after {
             content: '';
             position: absolute;
@@ -217,7 +230,7 @@
             background-color: #4a6fa5;
             opacity: 0.3;
         }
-        
+
         footer {
             background-color: #333;
             color: white;
@@ -225,45 +238,69 @@
             padding: 2rem 5%;
             margin-top: 3rem;
         }
-        
+
         .footer-links {
             display: flex;
             justify-content: center;
             list-style: none;
             margin-bottom: 1.5rem;
         }
-        
+
         .footer-links li {
             margin: 0 1rem;
         }
-        
+
         .footer-links a {
             color: #ccc;
             text-decoration: none;
             transition: color 0.3s;
         }
-        
+
         .footer-links a:hover {
             color: #ffd166;
         }
-        
+
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            background-color: #f9f9f9;
+            position: absolute;
+            top: 60px;
+            /* adjust depending on your nav height */
+            right: 20px;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
         @media (max-width: 768px) {
             .hero {
                 flex-direction: column;
                 text-align: center;
             }
-            
+
             .hero-content {
                 padding-right: 0;
                 margin-bottom: 2rem;
             }
-            
+
             .nav-links {
                 display: none;
             }
-            
+
+            .bars {
+                display: block;
+            }
+
+            .mobile-menu {
+                display: none;
+            }
+
             .step:not(:last-child)::after {
                 display: none;
+            }
+            .footer-links a{
+               font-size: 14px;
             }
         }
     </style>
@@ -277,20 +314,29 @@
             <li><a href="#">About</a></li>
             <li><a href="#">Contact</a></li>
         </ul>
-        <button class="login-btn" onclick="location.href='/auth.html'">Login</button>
+        <div class="last" style="gap:33px;">
+            <button class="login-btn" onclick="location.href='/auth.html'">Login</button>
+            <i style="margin-top: 12px; cursor:pointer" class="fa-solid fa-bars bars" onclick="toggleMenu()"></i>
+        </div>
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="#" style="color: black;text-decoration: none;">Home</a>
+            <a href="#" style="color: black;text-decoration: none;">About</a>
+            <a href="#" style="color: black;text-decoration: none;">Contact</a>
+            <a href="./chatbot.html" style="color: black;text-decoration: none;">Chatbot</a>
+        </div>
     </nav>
-    
     <section class="hero">
         <div class="hero-content">
             <h1>Your Personal Learning Assistant</h1>
-            <p>Get instant help with your homework and study questions. Our AI-powered tutor provides step-by-step solutions and explanations to help you learn better.</p>
+            <p>Get instant help with your homework and study questions. Our AI-powered tutor provides step-by-step
+                solutions and explanations to help you learn better.</p>
             <button class="cta-btn" onclick="location.href='chatbot.html'">Try Chatbot Now</button>
         </div>
         <div class="hero-image">
             <img src="/logo.png" alt="Chatbot Tutor in action">
         </div>
     </section>
-    
+
     <section class="features">
         <h2>Why Choose Chatbot Tutor?</h2>
         <div class="features-grid">
@@ -311,7 +357,6 @@
             </div>
         </div>
     </section>
-    
     <section class="how-it-works">
         <h2>How It Works</h2>
         <div class="steps">
@@ -332,7 +377,6 @@
             </div>
         </div>
     </section>
-    
     <footer>
         <ul class="footer-links">
             <li><a href="#">Privacy Policy</a></li>
@@ -343,4 +387,11 @@
         <p>&copy; 2023 Chatbot Tutor. All rights reserved.</p>
     </footer>
 </body>
+<script>
+  function toggleMenu() {
+    const menu = document.getElementById('mobileMenu');
+    menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+  }
+</script>
+
 </html>
