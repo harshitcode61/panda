@@ -5,8 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chatbot Tutor - Your Personal Learning Assistant</title>
-    
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
@@ -279,6 +277,51 @@
         }
 
 
+        /* Google button style */
+  .google-btn {
+    background-color: white;
+    color: #555;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+  }
+
+  .google-btn:hover {
+    background-color: #f7f7f7;
+  }
+
+  .google-btn img {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Logout button */
+  .logout-btn {
+    background-color: #e53935;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: background 0.3s ease;
+  }
+
+  .logout-btn:hover {
+    background-color: #c62828;
+  }
+
+
         @media (max-width: 768px) {
             .hero {
                 flex-direction: column;
@@ -325,6 +368,12 @@
             }
         }
     </style>
+    <!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+
 </head>
 
 <body>
@@ -400,37 +449,62 @@
         </div>
     </section>
 
-    <section class="features" style="background-color:#f9f9f9;">
-  <h2>We Value Your Feedback</h2>
-  <form id="feedbackForm" style="max-width:500px; margin:auto; text-align:left;">
-    <label for="name">Name:</label>
-    <input type="text" id="name" required style="width:100%; padding:10px; margin-bottom:10px;" />
+ 
 
-    <label for="email">Email (optional):</label>
-    <input type="email" id="email" style="width:100%; padding:10px; margin-bottom:10px;" />
+    <section class="features" style="padding: 5rem 5%;">
+  <h2 style="text-align: center; font-size: 2rem; margin-bottom: 2rem;">We Value Your Feedback</h2>
+  
+  <div style="max-width: 600px; margin: 0 auto; background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+    <div id="feedbackForm">
+      <div style="margin-bottom: 1.5rem;">
+        <label for="comment" style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: #333;">Your Feedback</label>
+        <textarea id="comment" placeholder="Share your experience with us..." rows="5" 
+          style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; resize: vertical; transition: border 0.3s;"></textarea>
+      </div>
 
-    <label>Your Rating:</label>
-    <div id="rating" style="margin: 10px 0;">
-      <span data-value="1">&#9734;</span>
-      <span data-value="2">&#9734;</span>
-      <span data-value="3">&#9734;</span>
-      <span data-value="4">&#9734;</span>
-      <span data-value="5">&#9734;</span>
+      <button id="logoutBtn" onclick="logout()" style="display: none;">Logout</button>
+
+      
+      <div style="margin-bottom: 1.5rem;">
+        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: #333;">Rating</label>
+        <div id="starRating" style="display: flex; gap: 5px; margin-bottom: 0.5rem;">
+          <span class="star" data-value="1" style="font-size: 24px; cursor: pointer; color: #ddd;">★</span>
+          <span class="star" data-value="2" style="font-size: 24px; cursor: pointer; color: #ddd;">★</span>
+          <span class="star" data-value="3" style="font-size: 24px; cursor: pointer; color: #ddd;">★</span>
+          <span class="star" data-value="4" style="font-size: 24px; cursor: pointer; color: #ddd;">★</span>
+          <span class="star" data-value="5" style="font-size: 24px; cursor: pointer; color: #ddd;">★</span>
+        </div>
+        <input type="hidden" id="rating" value="0">
+        <small id="ratingHelp" style="color: #666; font-style: italic;">Click on the stars to rate</small>
+      </div>
+      
+      <button onclick="submitFeedback()" 
+        style="background-color: #4a6fa5; color: white; border: none; padding: 12px 24px; border-radius: 6px; font-size: 16px; font-weight: 500; cursor: pointer; transition: all 0.3s; display: block; width: 100%;">
+        <i class="fas fa-paper-plane" style="margin-right: 8px;"></i> Submit Feedback
+      </button>
+      
+      <p id="feedbackMessage" style="margin-top: 1rem; text-align: center; display: none;"></p>
     </div>
+    
+    <div id="loginPrompt" style="text-align: center; display: none;">
+  <p style="margin-bottom: 1rem; font-size: 1.1rem; color: #444;">
+    Please login to submit feedback
+  </p>
+  <button onclick="loginWithGoogle()" class="google-btn">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" 
+         alt="Google icon" style="width: 20px; margin-right: 8px;">
+    Login with Google
+  </button>
+</div>
 
-    <label for="message">Your Feedback:</label>
-    <textarea id="message" required rows="4" style="width:100%; padding:10px; margin-bottom:10px;"></textarea>
 
-    <button type="submit" class="cta-btn" style="width:100%;">Submit Feedback</button>
-  </form>
-
-  <p id="feedbackStatus" style="text-align:center; margin-top:10px; color:green;"></p>
-
-  <div style="max-width:800px; margin: 40px auto;">
-    <h3 style="text-align:center;">What Others Are Saying</h3>
-    <div id="feedbackList" style="margin-top:20px;"></div>
+  <!-- Feedback List Display -->
+  <div id="feedbackList" style="max-width: 600px; margin: 3rem auto;">
+    <h3 style="text-align: center; margin-bottom: 1.5rem; color: #333;">Recent Feedback</h3>
+    <div id="feedbackItems" style="display: grid; gap: 1.5rem;"></div>
   </div>
 </section>
+
 
   <footer class="site-footer">
   <div class="footer-content">
@@ -446,12 +520,7 @@
 </body>
 <script>
 
-  <!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js"></script>
-
-<script>
-  const firebaseConfig = {
+     const firebaseConfig = {
     apiKey: "AIzaSyCVvaqJeppdqoL8lVM3rOdYlnqzZ3LmVsI",
     authDomain: "chatbot-fdb19.firebaseapp.com",
     projectId: "chatbot-fdb19",
@@ -461,79 +530,290 @@
     measurementId: "G-9V7PKYR92K"
   };
 
-  const app = firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  const auth = firebase.auth();
 
-  // Your other JavaScript code here (toggleMenu, feedback, etc.)
+  // Google login
+  function loginWithGoogle() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider)
+      .then((result) => {
+        const user = result.user;
+        alert(`Welcome ${user.displayName || user.email}`);
+        loadFeedback();
+      })
+      .catch((error) => {
+        console.error("Login failed:", error);
+        alert("Login failed. Check console for details.");
+      });
+  }
 
+  function logout() {
+    auth.signOut().then(() => {
+      alert("Logged out.");
+      loadFeedback();
+    });
+  }
 
-  
-    function toggleMenu() {
-        const menu = document.getElementById('mobileMenu');
-        menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+  function submitFeedback() {
+    const comment = document.getElementById("comment").value.trim();
+    const rating = parseInt(document.getElementById("rating").value);
+    const user = firebase.auth().currentUser;
+
+    if (!user) {
+      alert("Please login to submit feedback.");
+      return;
     }
 
+    if (!comment) {
+      alert("Please write a comment.");
+      return;
+    }
 
-    //feedback logic 
-    let selectedRating = 0;
+    db.collection("feedback").add({
+      userId: user.uid,
+      name: user.displayName || "Anonymous",
+      email: user.email || "Not Provided",
+      photo: user.photoURL || "",
+      comment: comment,
+      rating: rating,
+      timestamp: new Date()
+    })
+    .then(() => {
+      alert("Thank you for your feedback!");
+      document.getElementById("comment").value = "";
+      document.getElementById("rating").value = "5";
+      loadFeedback();
+    })
+    .catch((error) => {
+      console.error("Error submitting feedback:", error);
+      alert("Something went wrong. Try again.");
+    });
+  }
 
-  // Handle star rating selection
-  document.querySelectorAll("#rating span").forEach((star) => {
-    star.addEventListener("click", function () {
-      selectedRating = parseInt(this.dataset.value);
-      document.querySelectorAll("#rating span").forEach((s, i) => {
-        s.innerHTML = i < selectedRating ? "&#9733;" : "&#9734;";
+  function loadFeedback() {
+    db.collection("feedback")
+      .orderBy("timestamp", "desc")
+      .limit(5)
+      .get()
+      .then((querySnapshot) => {
+        const list = document.getElementById("feedbackList");
+        list.innerHTML = "";
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          const item = document.createElement("div");
+          item.style.marginBottom = "1rem";
+          item.innerHTML = `
+            <div style="display:flex; align-items:center; gap:10px;">
+              <img src="${data.photo || 'https://via.placeholder.com/40'}" style="width:40px; height:40px; border-radius:50%;">
+              <div>
+                <strong>${data.name || "Anonymous"}</strong><br>
+                <small>${data.email || ""}</small>
+              </div>
+            </div>
+            <p><strong>Rating:</strong> ${"⭐".repeat(data.rating)}</p>
+            <p><strong>Comment:</strong> ${data.comment}</p>
+            <hr>
+          `;
+          list.appendChild(item);
+        });
+      });
+  }
+
+  // Hide/show buttons based on auth state
+  auth.onAuthStateChanged((user) => {
+    const loginBtn = document.getElementById("loginBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    if (user) {
+      loginBtn.style.display = "none";
+      logoutBtn.style.display = "inline-block";
+    } else {
+      loginBtn.style.display = "inline-block";
+      logoutBtn.style.display = "none";
+    }
+  });
+
+  window.onload = loadFeedback;
+
+   // Star rating functionality
+  const stars = document.querySelectorAll('.star');
+  const ratingInput = document.getElementById('rating');
+  
+  stars.forEach(star => {
+    star.addEventListener('click', () => {
+      const value = parseInt(star.getAttribute('data-value'));
+      ratingInput.value = value;
+      
+      // Update star colors
+      stars.forEach((s, index) => {
+        if (index < value) {
+          s.style.color = '#ffd166'; // Gold color for selected stars
+        } else {
+          s.style.color = '#ddd'; // Grey color for unselected stars
+        }
+      });
+      
+      document.getElementById('ratingHelp').textContent = `You rated this ${value} star${value !== 1 ? 's' : ''}`;
+    });
+    
+    // Hover effect
+    star.addEventListener('mouseover', () => {
+      const value = parseInt(star.getAttribute('data-value'));
+      stars.forEach((s, index) => {
+        if (index < value) {
+          s.style.color = '#ffd166';
+        }
+      });
+    });
+    
+    star.addEventListener('mouseout', () => {
+      const currentRating = parseInt(ratingInput.value);
+      stars.forEach((s, index) => {
+        if (index >= currentRating) {
+          s.style.color = '#ddd';
+        }
       });
     });
   });
 
-  // Submit feedback to Firebase
-  document.getElementById("feedbackForm").addEventListener("submit", function (e) {
-    e.preventDefault();
+  // Enhanced submitFeedback function
+  function submitFeedback() {
+    const comment = document.getElementById("comment").value.trim();
+    const rating = parseInt(document.getElementById("rating").value);
+    const user = firebase.auth().currentUser;
 
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const message = document.getElementById("message").value.trim();
-
-    if (!message || selectedRating === 0) {
-      alert("Please provide both feedback and a star rating.");
+    if (!user) {
+      document.getElementById("feedbackForm").style.display = "none";
+      document.getElementById("loginPrompt").style.display = "block";
       return;
     }
 
-    const feedbackRef = db.ref("feedbacks");
-    const newFeedback = feedbackRef.push();
+    if (!comment) {
+      showMessage("Please write your feedback before submitting", "error");
+      return;
+    }
 
-    newFeedback.set({
-      name: name || "Anonymous",
-      email: email || "Not provided",
-      message: message,
-      rating: selectedRating,
-      timestamp: new Date().toISOString()
-    }).then(() => {
-      document.getElementById("feedbackForm").reset();
-      document.getElementById("feedbackStatus").textContent = "Thank you for your feedback!";
-      selectedRating = 0;
-      document.querySelectorAll("#rating span").forEach(s => s.innerHTML = "&#9734;");
-    });
-  });
+    if (rating === 0) {
+      showMessage("Please select a rating", "error");
+      return;
+    }
 
-  // Fetch and display feedback
-  const feedbackList = document.getElementById("feedbackList");
-  db.ref("feedbacks").on("value", (snapshot) => {
-    feedbackList.innerHTML = "";
-    snapshot.forEach((child) => {
-      const fb = child.val();
-      const ratingStars = "★".repeat(fb.rating) + "☆".repeat(5 - fb.rating);
-      const item = document.createElement("div");
-      item.style = "padding:15px; border-bottom:1px solid #ddd; background:#fff; border-radius:8px; margin-bottom:10px;";
-      item.innerHTML = `
-        <strong>${fb.name}</strong> <small style="color:gray;">(${new Date(fb.timestamp).toLocaleString()})</small>
-        <div style="color:#f39c12; font-size:18px;">${ratingStars}</div>
-        <p>${fb.message}</p>
-      `;
-      feedbackList.prepend(item);
+    // Show loading state
+    const submitBtn = document.querySelector('#feedbackForm button');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+    submitBtn.disabled = true;
+
+    db.collection("feedback").add({
+      userId: user.uid,
+      name: user.displayName || "Anonymous",
+      email: user.email || "Not Provided",
+      photo: user.photoURL || "",
+      comment: comment,
+      rating: rating,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    })
+    .then(() => {
+      showMessage("Thank you for your feedback!", "success");
+      document.getElementById("comment").value = "";
+      ratingInput.value = "0";
+      stars.forEach(star => star.style.color = '#ddd');
+      document.getElementById('ratingHelp').textContent = 'Click on the stars to rate';
+      
+      // Reload feedback after a short delay
+      setTimeout(loadFeedback, 500);
+    })
+    .catch((error) => {
+      console.error("Error submitting feedback:", error);
+      showMessage("Something went wrong. Please try again.", "error");
+    })
+    .finally(() => {
+      submitBtn.innerHTML = originalText;
+      submitBtn.disabled = false;
     });
+  }
+
+  function showMessage(text, type) {
+    const messageEl = document.getElementById("feedbackMessage");
+    messageEl.textContent = text;
+    messageEl.style.display = "block";
+    messageEl.style.color = type === "success" ? "#4CAF50" : "#F44336";
+    
+    setTimeout(() => {
+      messageEl.style.display = "none";
+    }, 5000);
+  }
+
+  // Enhanced loadFeedback function
+  function loadFeedback() {
+    const feedbackItems = document.getElementById("feedbackItems");
+    feedbackItems.innerHTML = '<div style="text-align:center;"><i class="fas fa-spinner fa-spin" style="font-size:24px;"></i></div>';
+    
+    db.collection("feedback")
+      .orderBy("timestamp", "desc")
+      .limit(5)
+      .get()
+      .then((querySnapshot) => {
+        if (querySnapshot.empty) {
+          feedbackItems.innerHTML = '<p style="text-align:center; color:#666;">No feedback yet. Be the first to share!</p>';
+          return;
+        }
+        
+        feedbackItems.innerHTML = "";
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          const date = data.timestamp ? data.timestamp.toDate() : new Date();
+          const formattedDate = date.toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'short', 
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          });
+          
+          const item = document.createElement("div");
+          item.style.background = "white";
+          item.style.padding = "1.5rem";
+          item.style.borderRadius = "8px";
+          item.style.boxShadow = "0 2px 8px rgba(0,0,0,0.1)";
+          item.innerHTML = `
+            <div style="display:flex; gap:12px; margin-bottom:12px;">
+              <img src="${data.photo || 'https://via.placeholder.com/50'}" 
+                style="width:50px; height:50px; border-radius:50%; object-fit:cover;">
+              <div>
+                <div style="font-weight:600;">${data.name || "Anonymous"}</div>
+                <div style="font-size:0.8rem; color:#666;">${formattedDate}</div>
+              </div>
+            </div>
+            <div style="margin-bottom:12px; color:#FFA000; font-size:1.2rem;">
+              ${"★".repeat(data.rating)}${"☆".repeat(5 - data.rating)}
+            </div>
+            <div style="color:#333; line-height:1.5;">
+              ${data.comment.replace(/\n/g, '<br>')}
+            </div>
+          `;
+          feedbackItems.appendChild(item);
+        });
+      })
+      .catch((error) => {
+        console.error("Error loading feedback:", error);
+        feedbackItems.innerHTML = '<p style="text-align:center; color:#F44336;">Failed to load feedback. Please try again later.</p>';
+      });
+  }
+
+  // Check auth state and update UI
+  auth.onAuthStateChanged((user) => {
+    if (user) {
+      document.getElementById("feedbackForm").style.display = "block";
+      document.getElementById("loginPrompt").style.display = "none";
+    } else {
+      document.getElementById("feedbackForm").style.display = "none";
+      document.getElementById("loginPrompt").style.display = "block";
+    }
+    loadFeedback();
   });
-</script>
+  </script>
 
 </html>
