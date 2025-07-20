@@ -263,15 +263,19 @@
         .mobile-menu {
             display: none;
             flex-direction: column;
-            background-color: #f9f9f9;
+            background: linear-gradient(to bottom, #ffffff, #f0f0f0);
             position: absolute;
             top: 60px;
             /* adjust depending on your nav height */
             right: 20px;
-            padding: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
             z-index: 1000;
+            animation: slideDown 0.3s ease-in-out;
+            min-width: 180px;
         }
+
 
         @media (max-width: 768px) {
             .hero {
@@ -299,18 +303,34 @@
             .step:not(:last-child)::after {
                 display: none;
             }
-            .footer-links a{
-               font-size: 14px;
+
+            .footer-links a {
+                font-size: 14px;
+            }
+
+            .mobile-menu a {
+                padding: 12px 10px;
+                color: #333;
+                text-decoration: none;
+                border-radius: 8px;
+                font-weight: 500;
+                transition: background 0.3s, transform 0.2s;
+            }
+
+            .mobile-menu a:hover {
+                background-color: #e0e0e0;
+                transform: translateX(4px);
             }
         }
     </style>
 </head>
+
 <body>
     <nav class="navbar">
         <div class="logo">Chatbot<span>Tutor</span></div>
         <ul class="nav-links">
             <li><a href="#">Home</a></li>
-            <li><a href="/chatbot.html">Chatbot</a></li>
+            <li><a href="/auth.html">Chatbot</a></li>
             <li><a href="#">About</a></li>
             <li><a href="#">Contact</a></li>
         </ul>
@@ -322,7 +342,7 @@
             <a href="#" style="color: black;text-decoration: none;">Home</a>
             <a href="#" style="color: black;text-decoration: none;">About</a>
             <a href="#" style="color: black;text-decoration: none;">Contact</a>
-            <a href="./chatbot.html" style="color: black;text-decoration: none;">Chatbot</a>
+            <a href="./auth.html" style="color: black;text-decoration: none;">Chatbot</a>
         </div>
     </nav>
     <section class="hero">
@@ -330,7 +350,7 @@
             <h1>Your Personal Learning Assistant</h1>
             <p>Get instant help with your homework and study questions. Our AI-powered tutor provides step-by-step
                 solutions and explanations to help you learn better.</p>
-            <button class="cta-btn" onclick="location.href='chatbot.html'">Try Chatbot Now</button>
+            <button class="cta-btn" onclick="location.href='auth.html'">Try Chatbot Now</button>
         </div>
         <div class="hero-image">
             <img src="/logo.png" alt="Chatbot Tutor in action">
@@ -377,21 +397,24 @@
             </div>
         </div>
     </section>
-    <footer>
-        <ul class="footer-links">
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Terms of Service</a></li>
-            <li><a href="#">FAQ</a></li>
-            <li><a href="#">Contact Us</a></li>
-        </ul>
-        <p>&copy; 2023 Chatbot Tutor. All rights reserved.</p>
-    </footer>
+  <footer class="site-footer">
+  <div class="footer-content">
+    <ul class="footer-links">
+      <li><a href="#">Privacy Policy</a></li>
+      <li><a href="#">Terms of Service</a></li>
+      <li><a href="#">FAQ</a></li>
+      <li><a href="#">Contact Us</a></li>
+    </ul>
+    <p>&copy; 2023 Chatbot Tutor. All rights reserved.</p>
+  </div>
+</footer>
+
 </body>
 <script>
-  function toggleMenu() {
-    const menu = document.getElementById('mobileMenu');
-    menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
-  }
+    function toggleMenu() {
+        const menu = document.getElementById('mobileMenu');
+        menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+    }
 </script>
 
 </html>
