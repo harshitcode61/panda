@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chatbot Tutor - Your Personal Learning Assistant</title>
+    
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-      
 
     <style>
         * {
@@ -425,10 +426,6 @@
 
   <p id="feedbackStatus" style="text-align:center; margin-top:10px; color:green;"></p>
 
-          <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js"></script>
-
   <div style="max-width:800px; margin: 40px auto;">
     <h3 style="text-align:center;">What Others Are Saying</h3>
     <div id="feedbackList" style="margin-top:20px;"></div>
@@ -448,6 +445,21 @@
 
 </body>
 <script>
+
+    const firebaseConfig = {
+    apiKey: "AIzaSyCVvaqJeppdqoL8lVM3rOdYlnqzZ3LmVsI",
+  authDomain: "chatbot-fdb19.firebaseapp.com",
+  projectId: "chatbot-fdb19",
+  storageBucket: "chatbot-fdb19.appspot.com",
+  messagingSenderId: "499513063427",
+  appId: "1:499513063427:web:b971d14bdb128fcc11f636",
+  measurementId: "G-9V7PKYR92K"
+};
+  
+
+  const app = firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+  
     function toggleMenu() {
         const menu = document.getElementById('mobileMenu');
         menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
@@ -466,8 +478,6 @@
       });
     });
   });
-
-    
 
   // Submit feedback to Firebase
   document.getElementById("feedbackForm").addEventListener("submit", function (e) {
