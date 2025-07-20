@@ -397,6 +397,39 @@
             </div>
         </div>
     </section>
+
+    <section class="features" style="background-color:#f9f9f9;">
+  <h2>We Value Your Feedback</h2>
+  <form id="feedbackForm" style="max-width:500px; margin:auto; text-align:left;">
+    <label for="name">Name:</label>
+    <input type="text" id="name" required style="width:100%; padding:10px; margin-bottom:10px;" />
+
+    <label for="email">Email (optional):</label>
+    <input type="email" id="email" style="width:100%; padding:10px; margin-bottom:10px;" />
+
+    <label>Your Rating:</label>
+    <div id="rating" style="margin: 10px 0;">
+      <span data-value="1">&#9734;</span>
+      <span data-value="2">&#9734;</span>
+      <span data-value="3">&#9734;</span>
+      <span data-value="4">&#9734;</span>
+      <span data-value="5">&#9734;</span>
+    </div>
+
+    <label for="message">Your Feedback:</label>
+    <textarea id="message" required rows="4" style="width:100%; padding:10px; margin-bottom:10px;"></textarea>
+
+    <button type="submit" class="cta-btn" style="width:100%;">Submit Feedback</button>
+  </form>
+
+  <p id="feedbackStatus" style="text-align:center; margin-top:10px; color:green;"></p>
+
+  <div style="max-width:800px; margin: 40px auto;">
+    <h3 style="text-align:center;">What Others Are Saying</h3>
+    <div id="feedbackList" style="margin-top:20px;"></div>
+  </div>
+</section>
+
   <footer class="site-footer">
   <div class="footer-content">
     <ul class="footer-links">
@@ -414,6 +447,68 @@
         const menu = document.getElementById('mobileMenu');
         menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
     }
+
+
+    //feedback logic 
+    let selectedRating = 0;
+
+  // Handle star rating selection
+  document.querySelectorAll("#rating span").forEach((star) => {
+    star.addEventListener("click", function () {
+      selectedRating = parseInt(this.dataset.value);
+      document.querySelectorAll("#rating span").forEach((s, i) => {
+        s.innerHTML = i < selectedRating ? "&#9733;" : "&#9734;";
+      });
+    });
+  });
+
+  // Submit feedback to Firebase
+  document.getElementById("feedbackForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const message = document.getElementById("message").value.trim();
+
+    if (!message || selectedRating === 0) {
+      alert("Please provide both feedback and a star rating.");
+      return;
+    }
+
+    const feedbackRef = db.ref("feedbacks");
+    const newFeedback = feedbackRef.push();
+
+    newFeedback.set({
+      name: name || "Anonymous",
+      email: email || "Not provided",
+      message: message,
+      rating: selectedRating,
+      timestamp: new Date().toISOString()
+    }).then(() => {
+      document.getElementById("feedbackForm").reset();
+      document.getElementById("feedbackStatus").textContent = "Thank you for your feedback!";
+      selectedRating = 0;
+      document.querySelectorAll("#rating span").forEach(s => s.innerHTML = "&#9734;");
+    });
+  });
+
+  // Fetch and display feedback
+  const feedbackList = document.getElementById("feedbackList");
+  db.ref("feedbacks").on("value", (snapshot) => {
+    feedbackList.innerHTML = "";
+    snapshot.forEach((child) => {
+      const fb = child.val();
+      const ratingStars = "★".repeat(fb.rating) + "☆".repeat(5 - fb.rating);
+      const item = document.createElement("div");
+      item.style = "padding:15px; border-bottom:1px solid #ddd; background:#fff; border-radius:8px; margin-bottom:10px;";
+      item.innerHTML = `
+        <strong>${fb.name}</strong> <small style="color:gray;">(${new Date(fb.timestamp).toLocaleString()})</small>
+        <div style="color:#f39c12; font-size:18px;">${ratingStars}</div>
+        <p>${fb.message}</p>
+      `;
+      feedbackList.prepend(item);
+    });
+  });
 </script>
 
 </html>
